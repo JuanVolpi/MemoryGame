@@ -1,0 +1,30 @@
+{
+    "bg-music-org": {
+        "extension": "mp3",
+        "local": "/assets/sounds/"
+    },
+    "bg-lowered-comp": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    },
+    "corr-choice": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    },
+    "paper-slide": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    },
+    "player-losing": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    },
+    "win-sound": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    },
+    "wrong-choice": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    }
+}

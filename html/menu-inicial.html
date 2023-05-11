@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/menu-inicial.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="main-page">
+        <img class="curtain1" src="../assets/images/cortinas.png" alt="">
+        <img class="curtain2" src="../assets/images/cortinas.png" alt="">
+        <div class="center-content">
+            <div class="center">
+                <div class="logo-image" onmouseenter="moveCurtains()" onmouseleave="repoCurtains()">
+                    <img id="logo" src="../assets/images/logo-mariogame.png" alt="">
+                </div>
+                <h1 class="game-tittle"></h1>
+            </div>
+            <div class="center-lower">
+                <button class="button-play" onclick="window.location = 'menu-dificuldade.html'">
+                    JOGAR
+                </button>
+                <button class="button-tutorial">COMO JOGAR</button>
+            </div>
+        </div>
+    </div>
+    <script src="../src/menu-inicial.js"></script>
+</body>
+
+</html>

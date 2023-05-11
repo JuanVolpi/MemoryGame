@@ -1,0 +1,55 @@
+.grid {
+    grid-template-columns: repeat(8, 1fr);
+    background-color: aqua;
+    gap: 15px;
+    max-width: 800px;
+    position: relative;
+    display: grid;
+}
+
+.carta {
+    height: 100%;
+    width: 200px;
+    aspect-ratio: 3/4;
+    transition: 0.5s all ease;
+    transform-style: preserve-3d;
+    border-radius: 10px;
+    border: 6px solid transparent;
+    overflow: clip;
+}
+
+.face {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transform: scaleX(-1);
+}
+
+.frente {
+    background-color: rgb(250, 13, 151);
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.costas {
+    transform: rotateY(180deg);
+    background-image: url('../assets/images/backgroundimg.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    transform: translateZ(1px);
+    backface-visibility: hidden;
+}
+
+.carta:hover {
+    scale: 1.02;
+    border-radius: 10px;
+    border: 6px solid blue;
+}
+
+.carta-selected {
+    border: 6px solid lime;
+}
+
+.gameSettings {}

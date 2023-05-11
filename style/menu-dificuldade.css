@@ -1,0 +1,58 @@
+body {
+    margin: 0px;
+}
+
+.page {
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    background-color: aqua;
+    margin: 0px;
+    padding: 0px;
+}
+
+.cards {
+    padding-right: 50px;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin: 0px;
+    align-items: center;
+}
+
+.card {
+    border-radius: 20px;
+    width: 30vw;
+    height: 90vh;
+    margin-inline-start: 30px;
+    color: white;
+    font-size: 80px;
+    text-align: center;
+    transition: 0.5s all ease;
+}
+
+.facil {
+    background-image: url('../assets/images/facil.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.medio {
+    background-image: url('../assets/images/medio.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.dificil {
+    background-image: url('../assets/images/dificil.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.card:hover {
+    scale: 1.05;
+    font-size: 90px;
+}
