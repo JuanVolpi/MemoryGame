@@ -1,4 +1,12 @@
 {
+    "overworldtheme": {
+        "extension": "mp3",
+        "local": "/assets/sounds/"
+    },
+    "bowser-castle": {
+        "extension": "mp3",
+        "local": "/assets/sounds/"
+    },
     "bg-music-org": {
         "extension": "mp3",
         "local": "/assets/sounds/"

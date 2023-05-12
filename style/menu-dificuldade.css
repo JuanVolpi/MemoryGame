@@ -1,5 +1,12 @@
 body {
     margin: 0px;
+    cursor: url("http://www.rw-designer.com/cursor-view/16804.png") 6 24, pointer !important;
+    animation-delay: .75s;
+    animation-timing-function: ease;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    background-color: cyan;
 }
 
 .page {
@@ -11,6 +18,7 @@ body {
     background-color: aqua;
     margin: 0px;
     padding: 0px;
+    transition: 0.5s all ease;
 }
 
 .cards {
@@ -55,4 +63,14 @@ body {
 .card:hover {
     scale: 1.05;
     font-size: 90px;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        background-color: black;
+        opacity: 0;
+    }
 }

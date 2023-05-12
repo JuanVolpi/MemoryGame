@@ -4,6 +4,7 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    cursor: url("http://www.rw-designer.com/cursor-view/16804.png") 6 24, pointer !important;
 }
 
 .main-page {

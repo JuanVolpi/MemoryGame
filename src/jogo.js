@@ -1,18 +1,17 @@
 import { playSound, stopSound, audioBackEndInit } from '../src/soundLoader.js';
 
+// Caminhos para os assets do jogo a partir da root do projeto
 const assets_paths = {
   images: '/assets/images/',
   sounds: '/assets/sounds/',
 };
 
+/**
+ * O jogo vai ter 3 dificuldades, logo dividimos as cartas todas
+ * em 3 sets de cartas, cada um com mais cartas que o último
+ */
 const gameCardDificullty = {
-  frenteCartasFacil: [
-    'Mushroom',
-    'Penguin',
-    'Propeller_Mushroom',
-    'Star',
-    'Dead1',
-  ],
+  frenteCartasFacil: ['Mushroom', 'Propeller_Mushroom', 'Star', 'Dead1'],
   frenteCartasMedio: [
     'Ice_Flower',
     'Dead2',
@@ -21,7 +20,7 @@ const gameCardDificullty = {
     'Propeller_Mushroom',
     'Star',
   ],
-  frenteCartasdificil: [
+  frenteCartasdiFicil: [
     'Dead1',
     'Dead2',
     'Fire_Flower',
@@ -34,10 +33,16 @@ const gameCardDificullty = {
 };
 
 /**
- * @returns {HTMLDivElement}
+ * @returns {HTMLDivElement} Carta
  * @param {string} cardImgSrc
+ *
+ * Cria uma carta a partir de um URL para uma imagem png
  */
 function criarCarta(cardImgSrc) {
+  let jogo = document.getElementById('grid');
+
+  jogo.style.gridTemplateColumns = '';
+
   const carta = document.createElement('div');
   carta.classList.add('carta');
 
@@ -60,23 +65,37 @@ function criarCarta(cardImgSrc) {
 
 /**
  * @returns {void}
- * @param {string[]} listaCartasNomes
+ * @param {string[]} listaNomesDasCartas
  * @param {HTMLDivElement} grid
  */
-function criarCartas(listaCartasNomes, grid) {
-  let cartasEmb = [...listaCartasNomes, ...listaCartasNomes].sort(
+function criarCartas(listaNomesDasCartas, grid) {
+  // Adiciona a lista de cartas dadas 2x à grid, assim assegura a
+  // existêmncia de pares de cartas.
+  // E usamos uma função de sort random para baralhar as cartas
+  let cartasEmb = [...listaNomesDasCartas, ...listaNomesDasCartas].sort(
     () => Math.random() - 0.5
   );
-  cartasEmb.map((cardName) => grid.appendChild(criarCarta(cardName)));
+  // Adicionamos as cartas à grelha 1 a 1
+  cartasEmb.forEach((cardName) => grid.appendChild(criarCarta(cardName)));
 }
 
-/** @returns {void} */
+/**
+ * @returns {void}
+ * Inicia e configura a página para o jogo funcionar,
+ * inicia a back-end que lida com o som, cria a grid das cartas
+ * e inicia a músiquinha de fundo
+ */
 async function init() {
   await audioBackEndInit();
+
   let grid = document.querySelector('.grid');
-  criarCartas(gameCardDificullty.frenteCartasFacil, grid);
-  playSound('bg-lowered-comp');
-  // grid.appendChild(criarCarta(frenteCartas[0]));
+  console.log(`->> ${gameCardDificullty[localStorage.getItem('dificuldade')]}`);
+  criarCartas(gameCardDificullty[localStorage.getItem('dificuldade')], grid);
+
+  let timeOutId = setTimeout(() => {
+    playSound('bg-music-org');
+    clearTimeout(timeOutId);
+  }, 1000);
 }
 
 init();
