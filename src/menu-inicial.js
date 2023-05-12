@@ -20,6 +20,3 @@ function repoCurtains() {
   Setup da informação necessária para o jogo 
   que é precisa em páginas diferentes; 
 */
-(() => {
-  window.gameState = {};
-})();

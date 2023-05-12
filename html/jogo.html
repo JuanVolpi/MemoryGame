@@ -8,19 +8,12 @@
     <link rel="stylesheet" href="../style/jogo.css" />
     <title>Document</title>
     <script src="/src/jogo.js" defer type="module"></script>
+    <!-- Not needed, importado dentro do ficheiro `jogo.js` -->
     <!-- <script src="/src/soundLoader.js" defer type="module"></script> -->
 </head>
 
 <body>
-    <section class="gameSettings">
-        <p>Escolhe a dificuldade do jogo</p>
-        <select name="dificuldade" id="gameDif">
-            <option value="easy">Fácil</option>
-            <option value="mid">Médio</option>
-            <option value="hard">Difícil</option>
-        </select>
-    </section>
-    <div class="grid"></div>
+    <div class="grid" id="grid"></div>
 </body>
 
 </html>
