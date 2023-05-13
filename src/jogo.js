@@ -57,6 +57,7 @@ function criarCarta(cardImgSrc) {
   // carta.setAttribute("selected", "false");
 
   const front_face = document.createElement("div");
+
   front_face.classList.add("face");
   front_face.classList.add("frente");
 
