@@ -1,9 +1,9 @@
-import { playSound, stopSound, audioBackEndInit } from '../src/soundLoader.js';
+import { audioBackEndInit } from "../src/soundLoader.js";
 
 // Caminhos para os assets do jogo a partir da root do projeto
 const assets_paths = {
-  images: '/assets/images/',
-  sounds: '/assets/sounds/',
+  images: "/assets/images/",
+  sounds: "/assets/sounds/",
 };
 
 /**
@@ -11,26 +11,39 @@ const assets_paths = {
  * em 3 sets de cartas, cada um com mais cartas que o último
  */
 const gameCardDificullty = {
-  frenteCartasFacil: ['Mushroom', 'Propeller_Mushroom', 'Star', 'Dead1'],
+  frenteCartasFacil: ["Mushroom", "Propeller_Mushroom", "Star", "Dead1"],
   frenteCartasMedio: [
-    'Ice_Flower',
-    'Dead2',
-    'Mushroom',
-    'Penguin',
-    'Propeller_Mushroom',
-    'Star',
+    "Ice_Flower",
+    "Dead2",
+    "Mushroom",
+    "Penguin",
+    "Propeller_Mushroom",
+    "Star",
   ],
-  frenteCartasdiFicil: [
-    'Dead1',
-    'Dead2',
-    'Fire_Flower',
-    'Ice_Flower',
-    'Mushroom',
-    'Penguin',
-    'Propeller_Mushroom',
-    'Star',
+  frenteCartasDificil: [
+    "Dead1",
+    "Dead2",
+    "Fire_Flower",
+    "Ice_Flower",
+    "Mushroom",
+    "Penguin",
+    "Propeller_Mushroom",
+    "Star",
   ],
 };
+
+export const dificuldadesJogo = {
+  facil: "frenteCartasFacil",
+  medio: "frenteCartasMedio",
+  dificil: "frenteCartasDificil",
+};
+
+const gameState = {
+  cartasSelecionadas: [],
+  numCardSelected: 0,
+};
+
+let locked = false;
 
 /**
  * @returns {HTMLDivElement} Carta
@@ -39,28 +52,62 @@ const gameCardDificullty = {
  * Cria uma carta a partir de um URL para uma imagem png
  */
 function criarCarta(cardImgSrc) {
-  let jogo = document.getElementById('grid');
+  const carta = document.createElement("div");
+  carta.classList.add("carta");
+  // carta.setAttribute("selected", "false");
 
-  jogo.style.gridTemplateColumns = '';
+  const front_face = document.createElement("div");
+  front_face.classList.add("face");
+  front_face.classList.add("frente");
 
-  const carta = document.createElement('div');
-  carta.classList.add('carta');
+  const back_face = document.createElement("div");
+  back_face.classList.add("face");
+  back_face.classList.add("costas");
+  back_face.style.backgroundImage = criarCartaSrcPath(cardImgSrc);
 
-  const front_face = document.createElement('div');
-  front_face.classList.add('face');
-  front_face.classList.add('frente');
-  front_face.style.backgroundImage = `url(${
-    assets_paths.images + cardImgSrc + '.png'
-  })`;
+  // carta.classList.toggle("_correta");
+  carta.onclick = () => {
+    if (gameState.numCardSelected < 3 && !locked) {
+      toggleDisplayCardSelection();
 
-  const back_face = document.createElement('div');
-  back_face.classList.add('face');
-  back_face.classList.add('costas');
+      console.log(cardImgSrc);
+      gameState.cartasSelecionadas.push(cardImgSrc);
+      if (gameState.numCardSelected === 2) {
+        if (
+          gameState.cartasSelecionadas[0] === gameState.cartasSelecionadas[1]
+        ) {
+          alert("yes");
+          carta.classList.toggle("_correta");
+        } else {
+          locked = true;
+          gameState.numCardSelected--;
+          gameState.cartasSelecionadas.pop();
+          let x = setTimeout(() => {
+            toggleDisplayCardSelection();
+            locked = false;
+            clearTimeout(x);
+          }, 1500);
+        }
+      }
+      console.log(gameState.cartasSelecionadas);
+      console.log(gameState.numCardSelected);
+    }
+  };
 
   carta.appendChild(back_face);
   carta.appendChild(front_face);
 
   return carta;
+
+  function toggleDisplayCardSelection() {
+    carta.classList.toggle("_selected");
+    front_face.classList.toggle("frente-flip");
+    back_face.classList.toggle("costas-flip");
+  }
+}
+
+function criarCartaSrcPath(cardImgSrc) {
+  return `url("${assets_paths.images}${cardImgSrc}.png")`;
 }
 
 /**
@@ -73,7 +120,7 @@ function criarCartas(listaNomesDasCartas, grid) {
   // existêmncia de pares de cartas.
   // E usamos uma função de sort random para baralhar as cartas
   let cartasEmb = [...listaNomesDasCartas, ...listaNomesDasCartas].sort(
-    () => Math.random() - 0.5
+    () => Math.random() - 0.5,
   );
   // Adicionamos as cartas à grelha 1 a 1
   cartasEmb.forEach((cardName) => grid.appendChild(criarCarta(cardName)));
@@ -88,12 +135,11 @@ function criarCartas(listaNomesDasCartas, grid) {
 async function init() {
   await audioBackEndInit();
 
-  let grid = document.querySelector('.grid');
-  console.log(`->> ${gameCardDificullty[localStorage.getItem('dificuldade')]}`);
-  criarCartas(gameCardDificullty[localStorage.getItem('dificuldade')], grid);
+  let grid = document.querySelector(".grid");
+  criarCartas(gameCardDificullty[localStorage.getItem("dificuldade")], grid);
 
   let timeOutId = setTimeout(() => {
-    playSound('bg-music-org');
+    playSound("bg-music-org");
     clearTimeout(timeOutId);
   }, 1000);
 }

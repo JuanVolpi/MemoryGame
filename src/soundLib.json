@@ -3,6 +3,10 @@
         "extension": "mp3",
         "local": "/assets/sounds/"
     },
+    "luigi-mansion": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    },
     "bowser-castle": {
         "extension": "mp3",
         "local": "/assets/sounds/"

@@ -1,84 +1,142 @@
-    body {
-        cursor: url("http://www.rw-designer.com/cursor-view/16804.png") 6 24, pointer !important;
+body {
+    cursor: url("http://www.rw-designer.com/cursor-view/16804.png") 6 24, pointer !important;
+    opacity: 0;
+    background-color: black;
+    animation-name: fadeIn;
+    animation-delay: 0.75s;
+    animation-timing-function: ease-in;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    height: 90vh;
+}
+
+.grid {
+    grid-template-columns: repeat(4, 150px);
+    background-size: contain;
+    background-clip: border-box;
+    background-repeat: repeat;
+    background-position: center;
+    background-image: url("/assets/images/bg-grid-svg.svg");
+    row-gap: 1.6rem;
+    display: grid;
+    height: max-content;
+    place-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 16px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+._selected {
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+    animation-name: float;
+    animation-timing-function: ease-in-out;
+    animation-duration: 1.24s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-direction: alternate-reverse;
+    animation-delay: 0.1s;
+}
+
+._correta {
+    animation-name: spin;
+    animation-timing-function: linear;
+    animation-duration: 3.5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+    animation-delay: 0.1s;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotate3d(0, 1, 0, 360deg);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0px);
+    }
+
+    50% {
+        transform: translate(0, 4px);
+    }
+
+    100% {
+        transform: translate(0, -0px);
+    }
+}
+
+.carta {
+    justify-self: center;
+    height: 150px;
+    width: 100px;
+    aspect-ratio: 3/4;
+    transform-style: preserve-3d;
+    border-radius: 10px;
+    border: 6px solid transparent;
+    overflow: clip;
+    transition: 0.3s all ease-in-out;
+    filter: drop-shadow(0 0 0.75rem rgba(76, 0, 130, 0.4));
+    perspective: 500px;
+    /* perspective: 500px; */
+}
+
+.face {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: .75s all ease-in-out;
+    /* transform: scaleX(-1); */
+}
+
+.frente {
+    background-position: center;
+    background-size: 150%;
+    background-image: url("../assets/images/backgroundimg.jpg");
+}
+
+.costas {
+    background-repeat: no-repeat;
+    background-position: center;
+    backface-visibility: hidden;
+    background-color: blue;
+}
+
+
+.carta:hover {
+    scale: 1.03;
+}
+
+.frente-flip {
+    /* background-color: #fff; */
+    transform: rotateY(180deg);
+}
+
+.costas-flip {
+    transform: rotateY(360deg);
+}
+
+@keyframes fadeIn {
+    0% {
         opacity: 0;
-        background-color: black;
-        animation-name: fadeIn;
-        animation-delay: .75s;
-        animation-timing-function: ease-in;
-        animation-duration: 1s;
-        animation-iteration-count: 1;
-        animation-fill-mode: forwards;
-        align-items: center;
-        justify-content: center;
-        display: flex;
-        flex-direction: row;
-        top: 50%;
     }
-    
-    .grid {
-        max-width: 1000px;
-        grid-template-columns: repeat(4, 2fr);
-        background-color: aqua;
-        gap: 1em;
-        position: relative;
-        display: grid;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        height: auto;
+
+    100% {
+        background-color: white;
+        opacity: 1;
     }
-    
-    .carta {
-        height: 300px;
-        width: 200px;
-        aspect-ratio: 3/4;
-        transition: 0.5s all ease;
-        transform-style: preserve-3d;
-        border-radius: 10px;
-        border: 6px solid transparent;
-        overflow: clip;
-    }
-    
-    .face {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        transform: scaleX(-1);
-    }
-    
-    .frente {
-        background-color: rgb(250, 13, 151);
-        background-size: 60%;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-    
-    .costas {
-        transform: rotateY(180deg);
-        background-image: url('../assets/images/backgroundimg.jpg');
-        background-size: cover;
-        background-position: center;
-        z-index: 1;
-        transform: translateZ(1px);
-        backface-visibility: hidden;
-    }
-    
-    .carta:hover {
-        scale: 1.02;
-        border-radius: 10px;
-        border: 6px solid blue;
-    }
-    
-    .carta-selected {
-        border: 6px solid lime;
-    }
-    
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            background-color: white;
-            opacity: 1;
-        }
-    }
+}
