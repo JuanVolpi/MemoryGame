@@ -59,7 +59,6 @@ body {
     animation-fill-mode: forwards;
     animation-direction: normal;
     animation-delay: 0.1s;
-
 }
 
 @keyframes show {
@@ -68,7 +67,6 @@ body {
         filter: grayscale(0) brightness(0%);
         opacity: 0; */
     }
-
     100% {
         filter: grayscale(1) brightness(1000%);
         transform: scale(1);
@@ -95,7 +93,7 @@ body {
     background-repeat: repeat;
     background-position: center;
     background-image: url("/assets/images/bg-grid-svg.svg");
-    row-gap: 1.6rem;
+    gap: 1.6rem;
     display: grid;
     height: max-content;
     place-items: center;
@@ -157,7 +155,6 @@ body {
     0% {
         transform: rotatex(0deg);
     }
-
     100% {
         transform: rotate3d(0, 0, 1, 360deg) rotate3d(0, 0, 1, 360deg);
     }
@@ -183,7 +180,6 @@ body {
         transform: translate(0, -0px);
     }
 }
-
 
 .carta {
     justify-self: center;
