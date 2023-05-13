@@ -12,7 +12,67 @@ body {
     justify-content: center;
     display: flex;
     flex-direction: row;
-    height: 90vh;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    place-items: center;
+    gap: 1rem;
+    color: crimson;
+    font-weight: 700;
+    position: fixed;
+    z-index: 1;
+    background-color: black;
+    font-size: xx-large;
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    z-index: -1;
+    transition: 3s opacity ease-in-out;
+}
+
+._showModal {
+    opacity: 1;
+    z-index: 1;
+}
+
+.modal>h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.modal>img {
+    transform: scale(0);
+    filter: grayscale(-1) brightness(-100%);
+}
+
+._showImage {
+    animation-name: show;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    animation-duration: 6s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+    animation-delay: 0.1s;
+
+}
+
+@keyframes show {
+    from {
+        /* background-clip: content-box;
+        filter: grayscale(0) brightness(0%);
+        opacity: 0; */
+    }
+
+    100% {
+        filter: grayscale(1) brightness(1000%);
+        transform: scale(1);
+    }
 }
 
 .grid {
@@ -54,6 +114,26 @@ body {
     animation-delay: 0.1s;
 }
 
+._death {
+    animation-name: spinHorizontal;
+    animation-timing-function: linear;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+    animation-delay: 0.1s;
+}
+
+@keyframes spinHorizontal {
+    0% {
+        transform: rotatex(0deg);
+    }
+
+    100% {
+        transform: rotate3d(0, 0, 1, 360deg) rotate3d(0, 0, 1, 360deg);
+    }
+}
+
 @keyframes spin {
     0% {
         transform: rotateY(0deg);
@@ -77,6 +157,7 @@ body {
         transform: translate(0, -0px);
     }
 }
+
 
 .carta {
     justify-self: center;
