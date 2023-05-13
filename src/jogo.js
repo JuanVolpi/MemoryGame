@@ -114,7 +114,7 @@ function toggleDisplayCardSelection(id) {
  * @returns {string}
  */
 const cssBgUrlFromImgName = (cardImgSrc) =>
-  `url("${buildImgPathFromImg(cardImgSrc)}.png")`;
+  `url("${buildImgPathFromImgName(cardImgSrc)}.png")`;
 
 /**
  * Dado o nome de uma imagem, o seu caminho no projeto
@@ -124,7 +124,7 @@ const cssBgUrlFromImgName = (cardImgSrc) =>
  * @param {string} cardImgSrc
  * @returns {string}
  */
-const buildImgPathFromImg = (cardImgSrc) =>
+const buildImgPathFromImgName = (cardImgSrc) =>
   `${assets_paths.images}${cardImgSrc}`;
 
 /**
@@ -132,7 +132,8 @@ const buildImgPathFromImg = (cardImgSrc) =>
  * @param {string} path
  * @returns {string | undefined}
  */
-const getImgNameFromBuildImgPathString = (path) => path.split("/").pop();
+const getImgNameFromBuildImgPathString = (path) =>
+  path.split("/").pop().slice(0, -2);
 
 /**
  * Lida com a lógica principal do jogo a cada click numa carta,
@@ -216,6 +217,11 @@ function handleCardClick(carta) {
         selecionadas, assim não se pode voltar a descelecionar as cartas */
         gameState.correctChoices++;
         playSound("corr-choice");
+
+        const powerUp = new Image();
+        powerUp.src = buildImgPathFromImgName(firstCardImageName);
+        powerUp.classList.add("power_icon");
+        document.getElementById("power").appendChild(powerUp);
 
         for (const id of gameState.cartasSelecionadas.values()) {
           document.getElementById(id).classList.toggle("_correta");
