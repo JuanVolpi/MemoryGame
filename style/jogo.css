@@ -10,8 +10,10 @@ body {
     animation-fill-mode: forwards;
     align-items: center;
     justify-content: center;
-    display: flex;
-    flex-direction: row;
+    place-items: center;
+    gap: 5rem;
+    display: grid;
+    grid-template-columns: .3fr .7fr .0fr;
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -47,8 +49,8 @@ body {
 }
 
 .modal>img {
-    transform: scale(0);
-    filter: grayscale(-1) brightness(-100%);
+    width: 0px;
+    height: auto;
 }
 
 ._showImage {
@@ -70,16 +72,14 @@ body {
     }
 
     100% {
-        filter: grayscale(1) brightness(1000%);
-        transform: scale(1);
+        width: 400px;
+        height: auto;
     }
 }
 
 .esq {
     background-color: wheat;
-    position: absolute;
     height: auto;
-    margin-left: -68%;
     width: 500px;
     align-items: center;
     justify-content: center;
@@ -167,6 +167,7 @@ body {
     0% {
         transform: rotateY(0deg);
     }
+
     100% {
         transform: rotate3d(0, 1, 0, 360deg) rotate3d(0, 0, 1, 360deg);
     }
@@ -176,9 +177,11 @@ body {
     0% {
         transform: translate(0, 0px);
     }
+
     50% {
         transform: translate(0, 4px);
     }
+
     100% {
         transform: translate(0, -0px);
     }
@@ -240,6 +243,7 @@ body {
     0% {
         opacity: 0;
     }
+
     100% {
         background-color: white;
         opacity: 1;

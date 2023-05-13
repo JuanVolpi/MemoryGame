@@ -7,6 +7,10 @@
         "extension": "wav",
         "local": "/assets/sounds/"
     },
+    "getreckt": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
+    },
     "bowser-castle": {
         "extension": "mp3",
         "local": "/assets/sounds/"

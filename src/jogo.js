@@ -1,4 +1,4 @@
-import { audioBackEndInit } from "../src/soundLoader.js";
+import { audioBackEndInit, playSound } from "../src/soundLoader.js";
 
 // Caminhos para os assets do jogo a partir da root do projeto
 const assets_paths = {
@@ -94,7 +94,11 @@ function criarCartaSrcPath(cardImgSrc) {
 }
 
 function handleCardClick(carta) {
-  if (gameState.cartasSelecionadas.find((ids) => ids === carta.id)) return;
+  if (
+    carta.getAttribute("selected") === "true" ||
+    gameState.cartasSelecionadas.find((crt) => crt === carta.id)
+  )
+    return;
 
   if (gameState.numCardSelected < 2 && !locked) {
     locked = true;
@@ -110,7 +114,6 @@ function handleCardClick(carta) {
   }
   if (gameState.numCardSelected === 2) {
     locked = true;
-    // handle corre ct choice
     let timeOutID = setTimeout(() => {
       let firstCardImage = String(getCartaImageSrc(0));
       let secondCardImage = String(getCartaImageSrc(1));
@@ -122,18 +125,30 @@ function handleCardClick(carta) {
         ) {
           for (const id of gameState.cartasSelecionadas.values())
             document.getElementById(id).classList.toggle("_death");
+
+          let timeOutId = setTimeout(() => {
+            playSound("getreckt");
+            clearTimeout(timeOutId);
+          }, 700);
+
           document.querySelector(".modal").classList.toggle("_showModal");
-          document.getElementById("bowserface").classList.toggle("_showImage");
+          document.getElementById("mariodance").classList.add("_showImage");
           document.removeChild(document.getElementById("grid"));
+
           return;
         }
 
         gameState.correctChoices++;
-        for (const id of gameState.cartasSelecionadas.values())
+        for (const id of gameState.cartasSelecionadas.values()) {
           document.getElementById(id).classList.toggle("_correta");
-      } else
-        for (const id of gameState.cartasSelecionadas.values())
+          document.getElementById(id).setAttribute("selected", "true");
+        }
+      } else {
+        for (const id of gameState.cartasSelecionadas.values()) {
           toggleDisplayCardSelection(id);
+          carta.setAttribute("selected", "false");
+        }
+      }
 
       gameState.cartasSelecionadas = [];
       gameState.numCardSelected = 0;
@@ -174,7 +189,7 @@ async function init() {
   criarCartas(gameCardDificullty[localStorage.getItem("dificuldade")], grid);
 
   let timeOutId = setTimeout(() => {
-    playSound("bg-music-org");
+    // playSound("bg-music-org");
     clearTimeout(timeOutId);
   }, 1000);
 }
