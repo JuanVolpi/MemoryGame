@@ -15,6 +15,36 @@ body {
     height: 90vh;
 }
 
+.esq {
+    background-color: wheat;
+    position: absolute;
+    height: auto;
+    margin-left: -68%;
+    width: 500px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.power {
+    grid-template-columns: repeat(1, 150px);
+    background-size: contain;
+    background-clip: border-box;
+    background-repeat: repeat;
+    background-position: center;
+    background-image: url("/assets/images/bg-grid-svg.svg");
+    row-gap: 1.6rem;
+    display: grid;
+    height: max-content;
+    place-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 16px 12px rgba(0, 0, 0, 0.15);
+}
+
 .grid {
     grid-template-columns: repeat(4, 150px);
     background-size: contain;
@@ -31,7 +61,6 @@ body {
     padding: 20px;
     box-shadow: 0px 0px 16px 12px rgba(0, 0, 0, 0.15);
 }
-
 
 ._selected {
     /* animation: name duration timing-function delay iteration-count direction fill-mode; */
@@ -58,7 +87,6 @@ body {
     0% {
         transform: rotateY(0deg);
     }
-
     100% {
         transform: rotate3d(0, 1, 0, 360deg) rotate3d(0, 0, 1, 360deg);
     }
@@ -68,11 +96,9 @@ body {
     0% {
         transform: translate(0, 0px);
     }
-
     50% {
         transform: translate(0, 4px);
     }
-
     100% {
         transform: translate(0, -0px);
     }
@@ -116,7 +142,6 @@ body {
     background-color: blue;
 }
 
-
 .carta:hover {
     scale: 1.03;
 }
@@ -134,7 +159,6 @@ body {
     0% {
         opacity: 0;
     }
-
     100% {
         background-color: white;
         opacity: 1;
