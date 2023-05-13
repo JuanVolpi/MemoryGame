@@ -47,7 +47,7 @@ body {
 ._correta {
     animation-name: spin;
     animation-timing-function: linear;
-    animation-duration: 3.5s;
+    animation-duration: 6s;
     animation-iteration-count: infinite;
     animation-fill-mode: forwards;
     animation-direction: normal;
@@ -60,7 +60,7 @@ body {
     }
 
     100% {
-        transform: rotate3d(0, 1, 0, 360deg);
+        transform: rotate3d(0, 1, 0, 360deg) rotate3d(0, 0, 1, 360deg);
     }
 }
 

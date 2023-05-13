@@ -14,21 +14,21 @@ const gameCardDificullty = {
   frenteCartasFacil: ["Mushroom", "Propeller_Mushroom", "Star", "Dead1"],
   frenteCartasMedio: [
     "Ice_Flower",
-    "Dead2",
     "Mushroom",
     "Penguin",
     "Propeller_Mushroom",
     "Star",
+    "Dead1",
   ],
   frenteCartasDificil: [
-    "Dead1",
-    "Dead2",
     "Fire_Flower",
     "Ice_Flower",
     "Mushroom",
     "Penguin",
     "Propeller_Mushroom",
     "Star",
+    "Dead1",
+    "Dead2",
   ],
 };
 
@@ -41,6 +41,7 @@ export const dificuldadesJogo = {
 const gameState = {
   cartasSelecionadas: [],
   numCardSelected: 0,
+  correctChoices: 0,
 };
 
 let locked = false;
@@ -48,16 +49,17 @@ let locked = false;
 /**
  * @returns {HTMLDivElement} Carta
  * @param {string} cardImgSrc
+ * @param {number} id
  *
  * Cria uma carta a partir de um URL para uma imagem png
  */
-function criarCarta(cardImgSrc) {
+function criarCarta(cardImgSrc, id) {
   const carta = document.createElement("div");
   carta.classList.add("carta");
-  // carta.setAttribute("selected", "false");
+  carta.setAttribute("id", id);
+  carta.setAttribute("selected", "false");
 
   const front_face = document.createElement("div");
-
   front_face.classList.add("face");
   front_face.classList.add("frente");
 
@@ -68,30 +70,46 @@ function criarCarta(cardImgSrc) {
 
   // carta.classList.toggle("_correta");
   carta.onclick = () => {
-    if (gameState.numCardSelected < 3 && !locked) {
-      toggleDisplayCardSelection();
+    if (gameState.cartasSelecionadas.find((ids) => ids === carta.id)) return;
 
-      console.log(cardImgSrc);
-      gameState.cartasSelecionadas.push(cardImgSrc);
-      if (gameState.numCardSelected === 2) {
-        if (
-          gameState.cartasSelecionadas[0] === gameState.cartasSelecionadas[1]
-        ) {
-          alert("yes");
-          carta.classList.toggle("_correta");
-        } else {
-          locked = true;
-          gameState.numCardSelected--;
-          gameState.cartasSelecionadas.pop();
-          let x = setTimeout(() => {
-            toggleDisplayCardSelection();
-            locked = false;
-            clearTimeout(x);
-          }, 1500);
-        }
-      }
-      console.log(gameState.cartasSelecionadas);
-      console.log(gameState.numCardSelected);
+    if (gameState.numCardSelected < 2 && !locked) {
+      locked = true;
+
+      console.log(!gameState.cartasSelecionadas.indexOf(carta.id) !== -1);
+      if (!gameState.cartasSelecionadas.indexOf(carta.id) !== -1)
+        toggleDisplayCardSelection(carta.id);
+      ++gameState.numCardSelected;
+
+      gameState.cartasSelecionadas.push(carta.id);
+
+      locked = false;
+    }
+    if (gameState.numCardSelected === 2) {
+      locked = true;
+      // handle correct choice
+      let timeOutID = setTimeout(() => {
+        let firstCardImage = String(getCartaImageSrc(0));
+        let secondCardImage = String(getCartaImageSrc(1));
+
+        if (firstCardImage === secondCardImage) {
+          if (
+            firstCardImage.includes("dead") ||
+            firstCardImage.includes("Dead")
+          )
+            alert("dead");
+
+          gameState.correctChoices++;
+          for (const id of gameState.cartasSelecionadas.values())
+            document.getElementById(id).classList.toggle("_correta");
+        } else
+          for (const id of gameState.cartasSelecionadas.values())
+            toggleDisplayCardSelection(id);
+
+        gameState.cartasSelecionadas = [];
+        gameState.numCardSelected = 0;
+        locked = false;
+        clearTimeout(timeOutID);
+      }, 1100);
     }
   };
 
@@ -100,10 +118,16 @@ function criarCarta(cardImgSrc) {
 
   return carta;
 
-  function toggleDisplayCardSelection() {
+  function getCartaImageSrc(index) {
+    return document.getElementById(gameState.cartasSelecionadas[index])
+      .children[0].style.backgroundImage;
+  }
+
+  function toggleDisplayCardSelection(id) {
+    const carta = document.getElementById(id);
     carta.classList.toggle("_selected");
-    front_face.classList.toggle("frente-flip");
-    back_face.classList.toggle("costas-flip");
+    carta.childNodes[1].classList.toggle("frente-flip");
+    carta.childNodes[0].classList.toggle("costas-flip");
   }
 }
 
@@ -124,7 +148,9 @@ function criarCartas(listaNomesDasCartas, grid) {
     () => Math.random() - 0.5,
   );
   // Adicionamos as cartas à grelha 1 a 1
-  cartasEmb.forEach((cardName) => grid.appendChild(criarCarta(cardName)));
+  cartasEmb.forEach((cardName, index) =>
+    grid.appendChild(criarCarta(cardName, index)),
+  );
 }
 
 /**
