@@ -56,8 +56,11 @@ let locked = false;
 function criarCarta(cardImgSrc, id) {
   const carta = document.createElement("div");
   carta.classList.add("carta");
+
   carta.setAttribute("id", id);
   carta.setAttribute("selected", "false");
+
+  carta.onclick = () => handleCardClick(carta);
 
   const front_face = document.createElement("div");
   front_face.classList.add("face");
@@ -68,71 +71,76 @@ function criarCarta(cardImgSrc, id) {
   back_face.classList.add("costas");
   back_face.style.backgroundImage = criarCartaSrcPath(cardImgSrc);
 
-  // carta.classList.toggle("_correta");
-  carta.onclick = () => {
-    if (gameState.cartasSelecionadas.find((ids) => ids === carta.id)) return;
-
-    if (gameState.numCardSelected < 2 && !locked) {
-      locked = true;
-
-      console.log(!gameState.cartasSelecionadas.indexOf(carta.id) !== -1);
-      if (!gameState.cartasSelecionadas.indexOf(carta.id) !== -1)
-        toggleDisplayCardSelection(carta.id);
-      ++gameState.numCardSelected;
-
-      gameState.cartasSelecionadas.push(carta.id);
-
-      locked = false;
-    }
-    if (gameState.numCardSelected === 2) {
-      locked = true;
-      // handle correct choice
-      let timeOutID = setTimeout(() => {
-        let firstCardImage = String(getCartaImageSrc(0));
-        let secondCardImage = String(getCartaImageSrc(1));
-
-        if (firstCardImage === secondCardImage) {
-          if (
-            firstCardImage.includes("dead") ||
-            firstCardImage.includes("Dead")
-          )
-            alert("dead");
-
-          gameState.correctChoices++;
-          for (const id of gameState.cartasSelecionadas.values())
-            document.getElementById(id).classList.toggle("_correta");
-        } else
-          for (const id of gameState.cartasSelecionadas.values())
-            toggleDisplayCardSelection(id);
-
-        gameState.cartasSelecionadas = [];
-        gameState.numCardSelected = 0;
-        locked = false;
-        clearTimeout(timeOutID);
-      }, 1100);
-    }
-  };
-
   carta.appendChild(back_face);
   carta.appendChild(front_face);
 
   return carta;
+}
 
-  function getCartaImageSrc(index) {
-    return document.getElementById(gameState.cartasSelecionadas[index])
-      .children[0].style.backgroundImage;
-  }
+function getCartaImageSrc(index) {
+  return document.getElementById(gameState.cartasSelecionadas[index])
+    .children[0].style.backgroundImage;
+}
 
-  function toggleDisplayCardSelection(id) {
-    const carta = document.getElementById(id);
-    carta.classList.toggle("_selected");
-    carta.childNodes[1].classList.toggle("frente-flip");
-    carta.childNodes[0].classList.toggle("costas-flip");
-  }
+function toggleDisplayCardSelection(id) {
+  const carta = document.getElementById(id);
+  carta.classList.toggle("_selected");
+  carta.childNodes[1].classList.toggle("frente-flip");
+  carta.childNodes[0].classList.toggle("costas-flip");
 }
 
 function criarCartaSrcPath(cardImgSrc) {
   return `url("${assets_paths.images}${cardImgSrc}.png")`;
+}
+
+function handleCardClick(carta) {
+  if (gameState.cartasSelecionadas.find((ids) => ids === carta.id)) return;
+
+  if (gameState.numCardSelected < 2 && !locked) {
+    locked = true;
+
+    console.log(!gameState.cartasSelecionadas.indexOf(carta.id) !== -1);
+    if (!gameState.cartasSelecionadas.indexOf(carta.id) !== -1)
+      toggleDisplayCardSelection(carta.id);
+    ++gameState.numCardSelected;
+
+    gameState.cartasSelecionadas.push(carta.id);
+
+    locked = false;
+  }
+  if (gameState.numCardSelected === 2) {
+    locked = true;
+    // handle corre ct choice
+    let timeOutID = setTimeout(() => {
+      let firstCardImage = String(getCartaImageSrc(0));
+      let secondCardImage = String(getCartaImageSrc(1));
+
+      if (firstCardImage === secondCardImage) {
+        if (
+          firstCardImage.includes("dead") ||
+          firstCardImage.includes("Dead")
+        ) {
+          for (const id of gameState.cartasSelecionadas.values())
+            document.getElementById(id).classList.toggle("_death");
+          document.querySelector(".modal").classList.toggle("_showModal");
+          document.getElementById("bowserface").classList.toggle("_showImage");
+          document.removeChild(document.getElementById("grid"));
+          return;
+        }
+
+        gameState.correctChoices++;
+        for (const id of gameState.cartasSelecionadas.values())
+          document.getElementById(id).classList.toggle("_correta");
+      } else
+        for (const id of gameState.cartasSelecionadas.values())
+          toggleDisplayCardSelection(id);
+
+      gameState.cartasSelecionadas = [];
+      gameState.numCardSelected = 0;
+      locked = false;
+      clearTimeout(timeOutID);
+    }, 1100);
+  }
 }
 
 /**
