@@ -1,4 +1,4 @@
-import { audioBackEndInit, playSound } from "../src/soundLoader.js";
+import { audioBackEndInit, playSound, stopSound } from "../src/soundLoader.js";
 
 // Caminhos para os assets do jogo a partir da root do projeto
 const assets_paths = {
@@ -13,7 +13,7 @@ const assets_paths = {
 const gameCardDificullty = {
   frenteCartasFacil: {
     cartas: ["Mushroom", "Propeller_Mushroom", "Star", "Dead1"],
-    mortes: 1,
+    pares: 3,
   },
   frenteCartasMedio: {
     cartas: [
@@ -25,7 +25,7 @@ const gameCardDificullty = {
       "Dead1",
       "Dead1",
     ],
-    mortes: 2,
+    pares: 5,
   },
   frenteCartasDificil: {
     cartas: [
@@ -39,23 +39,18 @@ const gameCardDificullty = {
       "Dead2",
       "Dead2",
     ],
-    mortes: 3,
+    pares: 6,
   },
-};
-
-export const dificuldadesJogo = {
-  facil: "frenteCartasFacil",
-  medio: "frenteCartasMedio",
-  dificil: "frenteCartasDificil",
 };
 
 const gameState = {
   cartasSelecionadas: [],
   numCardSelected: 0,
   correctChoices: 0,
+  neddedChoices: 0,
 };
 
-let locked = false;
+let InterationIsLocked = false;
 
 /**
  * @returns {HTMLDivElement} Carta
@@ -168,23 +163,24 @@ function handleCardClick(carta) {
     para evitar "race-conditions" (se é que pode acontecer) ao escolher várias
     cartas simultaneamente.
   */
-  if (gameState.numCardSelected < 2 && !locked) {
-    locked = true;
+  if (gameState.numCardSelected < 2 && !InterationIsLocked) {
+    InterationIsLocked = true;
 
     /* Só alteramos a dispozição da carta escolhida se essa mesma
     não estiver contida no array de cartas selcionadas*/
     if (!checkCardInSelectedCardArray(carta.id))
       toggleDisplayCardSelection(carta.id);
-    ++gameState.numCardSelected;
 
+    playSound("paper-slide");
+    ++gameState.numCardSelected;
     gameState.cartasSelecionadas.push(carta.id);
 
-    locked = false;
+    InterationIsLocked = false;
   }
   /* Verificação do par de cartas escolhidas e a ação resultante,
   se o jogo continua ou acaba */
   if (gameState.numCardSelected === 2) {
-    locked = true;
+    InterationIsLocked = true;
 
     /* Este comportamento lida com timmings de css,
     logo para a boa visualização destas fantásticas animações css,
@@ -205,11 +201,12 @@ function handleCardClick(carta) {
             document.getElementById(id).classList.toggle("_death");
 
           // Esperamos um pouco até mostrar o ecrã de end-game, para deixar a anim. correr
+          playSound("player-losing");
           let timeOutId = setTimeout(() => {
             playSound("getreckt");
             showGameOverScreen();
             clearTimeout(timeOutId);
-          }, 700);
+          }, 1100);
 
           return;
         }
@@ -218,6 +215,8 @@ function handleCardClick(carta) {
         mudamos a dispozição das mesmas, e marcamos as cartas como
         selecionadas, assim não se pode voltar a descelecionar as cartas */
         gameState.correctChoices++;
+        playSound("corr-choice");
+
         for (const id of gameState.cartasSelecionadas.values()) {
           document.getElementById(id).classList.toggle("_correta");
           document.getElementById(id).setAttribute("selected", "true");
@@ -228,13 +227,27 @@ function handleCardClick(carta) {
           toggleDisplayCardSelection(id);
           carta.setAttribute("selected", "false");
         }
+        playSound("paper-slide");
+      }
+
+      /* Verifica se as escolhas corretas necessárias para vencer
+      foram atingidas, e termina o jogo com sucesso se tudo estiver bem */
+      if (gameState.correctChoices === gameState.neddedChoices) {
+        console.log("True");
+        InterationIsLocked = true;
+        let id = setTimeout(() => {
+          playSound("win-sound");
+          showGameWinScreen();
+          clearTimeout(id);
+        }, 1100);
+        return;
       }
 
       /* Esta secção lida com o reset da rodada de seleção do par de cartas
       e desbloqueia o tabuleiro para a próxima jogada*/
       gameState.cartasSelecionadas = [];
       gameState.numCardSelected = 0;
-      locked = false;
+      InterationIsLocked = false;
       clearTimeout(timeOutID);
     }, 1100);
   }
@@ -257,9 +270,15 @@ function handleCardClick(carta) {
  * @returns {void}
  */
 function showGameOverScreen() {
+  document.getElementById("screens").style.zIndex = 9;
   document.querySelector(".modal").classList.toggle("_showModal");
   document.getElementById("mariodance").classList.add("_showImage");
-  document.removeChild(document.getElementById("grid"));
+}
+
+function showGameWinScreen() {
+  document.getElementById("screens").style.zIndex = 9;
+  document.querySelector(".win").classList.toggle("_showModal");
+  document.getElementById("mariodance").classList.add("_showImage");
 }
 
 /**
@@ -286,19 +305,25 @@ function criarCartas(listaNomesDasCartas, grid) {
  * inicia a back-end que lida com o som, cria a grid das cartas
  * e inicia a músiquinha de fundo
  */
-async function init() {
-  await audioBackEndInit();
+function init() {
+  audioBackEndInit();
+
+  document.getElementById("stopMusic").onclick = () => stopBgMusic();
 
   let grid = document.querySelector(".grid");
-  criarCartas(
-    gameCardDificullty[localStorage.getItem("dificuldade")].cartas,
-    grid,
-  );
+  const infoCartas = gameCardDificullty[localStorage.getItem("dificuldade")];
+  criarCartas(infoCartas.cartas, grid);
+
+  gameState.neddedChoices = infoCartas.pares;
 
   let timeOutId = setTimeout(() => {
     // playSound("bg-music-org");
     clearTimeout(timeOutId);
   }, 1000);
+}
+
+function stopBgMusic() {
+  stopSound("bg-music-org");
 }
 
 init();
