@@ -32,7 +32,6 @@ const gameCardDificullty = {
       "Fire_Flower",
       "Ice_Flower",
       "Mushroom",
-      "Penguin",
       "Propeller_Mushroom",
       "Star",
       "Dead1",
