@@ -60,8 +60,7 @@ Array.from(cartas).forEach(
  * de tempo prefedefinido na funcção
  */
 function gameStartRedirect(gameMusicTheme, dificuldade) {
-  console.log("HAllo");
-  playSound(gameMusicTheme, 0.5);
+  playSound(gameMusicTheme, 0.3);
 
   document.body.style.animationName = "fadeOut";
   localStorage.setItem("dificuldade", dificuldade);

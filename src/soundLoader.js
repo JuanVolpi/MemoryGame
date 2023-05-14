@@ -78,10 +78,8 @@ export function audioBackEndInit() {
 
 function testAudioPlayBack() {
   playSound("bg-music-org");
-  // console.table(audio_table);
   let x = setTimeout(() => {
     stopSound("bg-music-org");
-    // console.table(audio_table);
     clearTimeout(x);
   }, 4000);
 }

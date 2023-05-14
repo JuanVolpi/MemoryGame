@@ -4,7 +4,6 @@ function moveCurtains() {
 
   curtain1.style.left = "150px";
   curtain2.style.right = "150px";
-  console.log("oi");
 }
 
 function repoCurtains() {
@@ -13,5 +12,4 @@ function repoCurtains() {
 
   curtain1.style.left = "200px";
   curtain2.style.right = "200px";
-  console.log("oi");
 }
