@@ -50,7 +50,7 @@ const gameState = {
   neddedChoices: 0,
 };
 
-let InterationIsLocked = false;
+let GameInteractionIsLocked = false;
 
 /**
  * @returns {HTMLDivElement} Carta
@@ -84,9 +84,10 @@ function criarCarta(cardImgSrc, id) {
 }
 
 function getCartaImageSrc(index) {
-  return document
+  const backgroundImage = document
     .getElementById(gameState.cartasSelecionadas[index])
     .querySelector(".costas").style.backgroundImage;
+  return backgroundImage;
 }
 
 /**
@@ -132,7 +133,7 @@ const buildImgPathFromImgName = (cardImgSrc) =>
  * @param {string} path
  * @returns {string | undefined}
  */
-const getImgNameFromBuildImgPathString = (path) =>
+const getImgNameFromImgPathString = (path) =>
   path.split("/").pop().slice(0, -2);
 
 /**
@@ -164,8 +165,8 @@ function handleCardClick(carta) {
     para evitar "race-conditions" (se é que pode acontecer) ao escolher várias
     cartas simultaneamente.
   */
-  if (gameState.numCardSelected < 2 && !InterationIsLocked) {
-    InterationIsLocked = true;
+  if (gameState.numCardSelected < 2 && !GameInteractionIsLocked) {
+    GameInteractionIsLocked = true;
 
     /* Só alteramos a dispozição da carta escolhida se essa mesma
     não estiver contida no array de cartas selcionadas*/
@@ -176,37 +177,37 @@ function handleCardClick(carta) {
     ++gameState.numCardSelected;
     gameState.cartasSelecionadas.push(carta.id);
 
-    InterationIsLocked = false;
+    GameInteractionIsLocked = false;
   }
   /* Verificação do par de cartas escolhidas e a ação resultante,
   se o jogo continua ou acaba */
   if (gameState.numCardSelected === 2) {
-    InterationIsLocked = true;
+    GameInteractionIsLocked = true;
 
     /* Este comportamento lida com timmings de css,
     logo para a boa visualização destas fantásticas animações css,
     temos de dar tempo para elas ocurrerem */
-    let timeOutID = setTimeout(() => {
-      let firstCardImageName = getImgNameFromBuildImgPathString(
+    let gameBehaviorComputationTimeOutID = setTimeout(() => {
+      let firstPickCardImageName = getImgNameFromImgPathString(
         getCartaImageSrc(0),
       );
-      let secondCardImageName = getImgNameFromBuildImgPathString(
+      let secondPickCardImageName = getImgNameFromImgPathString(
         getCartaImageSrc(1),
       );
 
-      if (firstCardImageName === secondCardImageName) {
+      if (firstPickCardImageName === secondPickCardImageName) {
         // Verificação para ver se é o par de cartas que acabam o jogo
-        if (firstCardImageName.toLocaleLowerCase().includes("dead")) {
+        if (firstPickCardImageName.toLocaleLowerCase().includes("dead")) {
           // Atribui a animação css especifica para as cartas de game-over
           for (const id of gameState.cartasSelecionadas.values())
             document.getElementById(id).classList.toggle("_death");
 
           // Esperamos um pouco até mostrar o ecrã de end-game, para deixar a anim. correr
           playSound("player-losing");
-          let timeOutId = setTimeout(() => {
-            playSound("getreckt");
+          let deathScreenAppearDelay = setTimeout(() => {
+            playSound("getreckt", 0.5);
             showGameOverScreen();
-            clearTimeout(timeOutId);
+            clearTimeout(deathScreenAppearDelay);
           }, 1100);
 
           return;
@@ -219,7 +220,7 @@ function handleCardClick(carta) {
         playSound("corr-choice");
 
         const powerUp = new Image();
-        powerUp.src = buildImgPathFromImgName(firstCardImageName);
+        powerUp.src = buildImgPathFromImgName(firstPickCardImageName);
         powerUp.classList.add("power_icon");
         document.getElementById("power").appendChild(powerUp);
 
@@ -240,7 +241,7 @@ function handleCardClick(carta) {
       foram atingidas, e termina o jogo com sucesso se tudo estiver bem */
       if (gameState.correctChoices === gameState.neddedChoices) {
         console.log("True");
-        InterationIsLocked = true;
+        GameInteractionIsLocked = true;
         let id = setTimeout(() => {
           playSound("win-sound");
           showGameWinScreen();
@@ -253,8 +254,8 @@ function handleCardClick(carta) {
       e desbloqueia o tabuleiro para a próxima jogada*/
       gameState.cartasSelecionadas = [];
       gameState.numCardSelected = 0;
-      InterationIsLocked = false;
-      clearTimeout(timeOutID);
+      GameInteractionIsLocked = false;
+      clearTimeout(gameBehaviorComputationTimeOutID);
     }, 1100);
   }
 
@@ -323,7 +324,7 @@ function init() {
   gameState.neddedChoices = infoCartas.pares;
 
   let timeOutId = setTimeout(() => {
-    // playSound("bg-music-org");
+    playSound("bg-music-org");
     clearTimeout(timeOutId);
   }, 1000);
 }
