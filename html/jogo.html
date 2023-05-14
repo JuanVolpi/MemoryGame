@@ -2,37 +2,36 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../style/jogo.css" />
-  <title>Document</title>
-  <script src="/src/jogo.js" defer type="module"></script>
-  <!-- Not needed, importado dentro do ficheiro jogo.js -->
-  <!-- <script src="/src/soundLoader.js" defer type="module"></script> -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style/jogo.css" />
+    <title>Jogo da Memória</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <script src="/src/jogo.js" defer type="module"></script>
+    <!-- Not needed, importado dentro do ficheiro jogo.js -->
+    <!-- <script src="/src/soundLoader.js" defer type="module"></script> -->
 </head>
 
 <body>
-  <div id="screens">
-    <div class="modal">
-      <h1>Game Over</h1>
-      <a href="/html/menu-dificuldade.html">New Game</a>
-      <img src="https://thumbs.gfycat.com/AgonizingSpiffyGrouper-size_restricted.gif" alt="" id="mariodance"
-        class="_showImage">
+    <div id="screens">
+        <div class="modal">
+            <h1>Game Over</h1>
+            <a href="/html/menu-dificuldade.html">New Game</a>
+            <img src="https://thumbs.gfycat.com/AgonizingSpiffyGrouper-size_restricted.gif" alt="" id="mariodance" class="_showImage">
+        </div>
+        <div class="win">
+            <h1>You Win</h1>
+            <a href="/html/menu-dificuldade.html">New Game</a>
+            <img src="https://thumbs.gfycat.com/AgonizingSpiffyGrouper-size_restricted.gif" alt="" id="mariodance" class="_showImage">
+        </div>
     </div>
-    <div class="win">
-      <h1>You Win</h1>
-      <a href="/html/menu-dificuldade.html">New Game</a>
-      <img src="https://thumbs.gfycat.com/AgonizingSpiffyGrouper-size_restricted.gif" alt="" id="mariodance"
-        class="_showImage">
+    <div class="esq">
+        <button id="stopMusic">Stop Music</button>
+        <h1>POWERS</h1>
+        <div class="power" id="power"></div>
     </div>
-  </div>
-  <div class="esq">
-    <button id="stopMusic">Stop Music</button>
-    <h1>POWERS</h1>
-    <div class="power" id="power"></div>
-  </div>
-  <div class="grid" id="grid"></div>
+    <div class="grid" id="grid"></div>
 </body>
 
 </html>
