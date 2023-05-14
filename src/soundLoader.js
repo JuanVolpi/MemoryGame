@@ -1,11 +1,22 @@
+window.soundLib = new AudioContext();
+
+/* Tabela dos audios atualmente a serem reproduzidos*/
 export const audio_table = {};
 
+/**
+ * Encarregue de carregar os audios para os elementos <audio>
+ * e coloca os mesmos no html da página
+ *
+ * @returns {void}
+ */
 export async function loadSoundsIntoHTML() {
-  const soundSectionName = '#audio-lib';
+  const soundSectionName = "#audio-lib";
 
-  let audioSection = document.createElement('section');
-  audioSection.setAttribute('id', soundSectionName);
+  let audioSection = document.createElement("section");
+  audioSection.setAttribute("id", soundSectionName);
 
+  // Lê os efeitos sonoros diponivies ao jogo,
+  // descritos num ficheiro JSON
   let soundEffectsLib = await loadSoundLibJSON();
 
   for (let soundEffectName in soundEffectsLib) {
@@ -26,8 +37,9 @@ export function pageAudioContext() {
   return window.soundLib;
 }
 
-export function playSound(soundName) {
+export function playSound(soundName, volume) {
   const sound = document.getElementById(soundName);
+  sound.volume = volume || 0.1;
   audio_table[soundName].playing = true;
   sound.play();
 }
@@ -39,38 +51,37 @@ export function stopSound(soundName) {
 }
 
 /**
- * @param local {string}
- * @param audioName {string}
- * @param extension {string}
+ * @param {string} local
+ * @param {string} audioName
+ * @param {string} extension
  */
 function createAudioElement(local, audioName, extension) {
-  let newAudioElement = document.createElement('audio');
-  newAudioElement.setAttribute('id', audioName);
-  newAudioElement.setAttribute('src', `${local}${audioName}.${extension}`);
+  let newAudioElement = document.createElement("audio");
+  newAudioElement.setAttribute("id", audioName);
+  newAudioElement.setAttribute("src", `${local}${audioName}.${extension}`);
   return newAudioElement;
 }
 
 async function loadSoundLibJSON() {
-  return await fetch('../src/soundLib.json').then(
-    async (res) => await res.json()
+  return await fetch("../src/soundLib.json").then(
+    async (res) => await res.json(),
   );
 }
 
-export async function audioBackEndInit() {
+export function audioBackEndInit() {
   window.soundLib = new AudioContext();
-  await loadSoundsIntoHTML();
+  loadSoundsIntoHTML();
   pageAudioContext();
   // testAudioPlayBack();
 }
 // audioBackEndInit();
 
 function testAudioPlayBack() {
-  playSound('bg-music-org');
+  playSound("bg-music-org");
   // console.table(audio_table);
   let x = setTimeout(() => {
-    stopSound('bg-music-org');
+    stopSound("bg-music-org");
     // console.table(audio_table);
     clearTimeout(x);
   }, 4000);
 }
-window.soundLib = new AudioContext();

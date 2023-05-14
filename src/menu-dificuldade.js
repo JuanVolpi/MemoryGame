@@ -1,56 +1,74 @@
-import { audioBackEndInit, playSound, stopSound } from './soundLoader.js';
+import { audioBackEndInit, playSound, stopSound } from "./soundLoader.js";
 
-let cartas = document.getElementsByClassName('card');
+const dificuldadesJogo = {
+  facil: "frenteCartasFacil",
+  medio: "frenteCartasMedio",
+  dificil: "frenteCartasDificil",
+};
 
-let facil = document.getElementById('facil');
-let medio = document.getElementById('medio');
-let dificil = document.getElementById('dificil');
+let cartas = document.getElementsByClassName("card");
+
+let facil = document.getElementById("facil");
+let medio = document.getElementById("medio");
+let dificil = document.getElementById("dificil");
 let musica = 0;
 
 audioBackEndInit();
 
 // Muda a cor de fundo da página, ao entrar em cada carta
 // cada carta têm uma cor especifica que simboliza a
-facil.onmouseover = function () {
-  document.getElementsByClassName('page')[0].style.backgroundColor = 'green';
+facil.onmouseover = () => {
+  document.querySelector(".page").style.backgroundColor = "green";
 };
-facil.onclick = function () {
-  playSound('overworldtheme');
-  document.body.style.animationName = 'fadeOut';
-  musica = setTimeout(() => {
-    stopSound('overworldtheme');
-    localStorage.setItem('dificuldade', 'frenteCartasFacil');
-    window.location = 'jogo.html';
-    clearTimeout(musica);
-  }, 2200);
+facil.onclick = () => {
+  //chamar jogo dificuldade facil
+  gameStartRedirect("overworldtheme", dificuldadesJogo.facil);
 };
 
-medio.onmouseover = function () {
-  document.getElementsByClassName('page')[0].style.backgroundColor = 'yellow';
+medio.onmouseover = () => {
+  document.querySelector(".page").style.backgroundColor = "yellow";
 };
-medio.onclick = function () {
-  //chamar jogo medio
-  localStorage.setItem('dificuldade', 'frenteCartasMedio');
+medio.onclick = () => {
+  //chamar jogo dificuldade media
+  gameStartRedirect("overworldtheme", dificuldadesJogo.medio);
 };
 
-dificil.onmouseover = function () {
-  document.getElementsByClassName('page')[0].style.backgroundColor = 'red';
+dificil.onmouseover = () => {
+  document.querySelector(".page").style.backgroundColor = "red";
 };
-dificil.onclick = function () {
-  playSound('bowser-castle');
-  document.body.style.animationName = 'fadeOut';
-  musica = setTimeout(() => {
-    stopSound('bowser-castle');
-    localStorage.setItem('dificuldade', 'frenteCartasdiFicil');
-    window.location = 'jogo.html';
-    clearTimeout(musica);
-  }, 2000);
+dificil.onclick = () => {
+  //chamar jogo dificuldade dificil
+  gameStartRedirect("bowser-castle", dificuldadesJogo.dificil);
 };
 
 // Mudar a cor de fundo da página para cyan, após o cursor sair de cada carta
 Array.from(cartas).forEach(
-  (x) =>
-    (x.onmouseleave = () => {
-      document.querySelector('.page').style.backgroundColor = 'cyan';
-    })
+  (carta) =>
+    (carta.onmouseleave = () => {
+      document.querySelector(".page").style.backgroundColor = "cyan";
+    }),
 );
+
+/**
+ * @returns {void}
+ * @param {string} gameMusicTheme
+ * @param {string} dificuldade
+ *
+ * Inicia a sequencia de transição entre páginas,
+ * define a difculdade do jog e
+ * inicia a musica e retira a mesma depois de um intervalo
+ * de tempo prefedefinido na funcção
+ */
+function gameStartRedirect(gameMusicTheme, dificuldade) {
+  console.log("HAllo");
+  playSound(gameMusicTheme, 0.5);
+
+  document.body.style.animationName = "fadeOut";
+  localStorage.setItem("dificuldade", dificuldade);
+
+  musica = setTimeout(() => {
+    window.location = "jogo.html";
+    stopSound(gameMusicTheme);
+    clearTimeout(musica);
+  }, 2200);
+}
