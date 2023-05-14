@@ -205,12 +205,11 @@ function handleCardClick(carta) {
           // Esperamos um pouco até mostrar o ecrã de end-game, para deixar a anim. correr
           playSound("player-losing");
           let deathScreenAppearDelay = setTimeout(() => {
+            stopSound("bg-music-org");
             playSound("getreckt", 0.5);
             showGameOverScreen();
             clearTimeout(deathScreenAppearDelay);
           }, 1100);
-
-          return;
         }
 
         /* Se a esolha de carta gera um par de cartas iguais,
@@ -240,14 +239,13 @@ function handleCardClick(carta) {
       /* Verifica se as escolhas corretas necessárias para vencer
       foram atingidas, e termina o jogo com sucesso se tudo estiver bem */
       if (gameState.correctChoices === gameState.neddedChoices) {
-        console.log("True");
         GameInteractionIsLocked = true;
         let id = setTimeout(() => {
+          stopSound("bg-music-org");
           playSound("win-sound");
           showGameWinScreen();
           clearTimeout(id);
         }, 1100);
-        return;
       }
 
       /* Esta secção lida com o reset da rodada de seleção do par de cartas
@@ -278,13 +276,15 @@ function handleCardClick(carta) {
  */
 function showGameOverScreen() {
   document.getElementById("screens").style.zIndex = 9;
-  document.querySelector(".modal").classList.toggle("_showModal");
+  document.getElementById("screens").style.opacity = 1;
+  document.querySelector(".modal").classList.add("_showModal");
   document.getElementById("mariodance").classList.add("_showImage");
 }
 
 function showGameWinScreen() {
   document.getElementById("screens").style.zIndex = 9;
-  document.querySelector(".win").classList.toggle("_showModal");
+  document.getElementById("screens").style.opacity = 1;
+  document.querySelector(".win").classList.add("_showModal");
   document.getElementById("mariodance").classList.add("_showImage");
 }
 
@@ -324,7 +324,7 @@ function init() {
   gameState.neddedChoices = infoCartas.pares;
 
   let timeOutId = setTimeout(() => {
-    playSound("bg-music-org");
+    playSound("bg-music-org", 0.05);
     clearTimeout(timeOutId);
   }, 1000);
 }
