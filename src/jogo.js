@@ -21,11 +21,10 @@ const gameCardDificullty = {
       "Mushroom",
       "Penguin",
       "Propeller_Mushroom",
-      "Star",
       "Dead1",
       "Dead1",
     ],
-    pares: 5,
+    pares: 4,
   },
   frenteCartasDificil: {
     cartas: [
@@ -38,7 +37,7 @@ const gameCardDificullty = {
       "Dead2",
       "Dead2",
     ],
-    pares: 6,
+    pares: 5,
   },
 };
 
@@ -82,6 +81,12 @@ function criarCarta(cardImgSrc, id) {
   return carta;
 }
 
+/**
+ * Retira o valor da regra css de background image
+ *
+ * @param {number} index
+ * @returns {string}
+ */
 function getCartaImageSrc(index) {
   const backgroundImage = document
     .getElementById(gameState.cartasSelecionadas[index])
