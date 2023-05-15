@@ -38,5 +38,9 @@
     "wrong-choice": {
         "extension": "wav",
         "local": "/assets/sounds/"
+    },
+    "getreckt": {
+        "extension": "wav",
+        "local": "/assets/sounds/"
     }
 }
