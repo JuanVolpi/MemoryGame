@@ -1,14 +1,59 @@
 * {
-    box-sizing: border-box
+    box-sizing: border-box;
+    font-family: 'Mogra', cursive;
+}
+
+body {
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin-bottom: 0;
+    padding: 0;
+    background-color: #f1de4e;
+    overflow: hidden;
+}
+
+.btn-voltar {
+    padding: .75rem;
+    margin: 1rem auto;
+    border-radius: 20px;
+    border: 3px solid blue;
+    background-color: blueviolet;
+    font-size: 30px;
+    color: white;
+    transition: .3s all ease-in-out;
+    z-index: 1;
+    position: inherit;
+    margin-left: 80px;
+}
+
+.btn-voltar:hover {
+    z-index: 1;
+    background-color: rgba(137, 43, 226, 0.90);
+    border-color: rgba(0, 0, 255, 0.90);
+    transform: scale(1.1);
+}
+
+.page {
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 
 /* Slideshow container */
 
 .slideshow-container {
-    max-width: 1000px;
+    max-width: 60vw;
+    max-height: 90vh;
     position: relative;
-    margin: auto;
+    margin: 0;
+    box-shadow: 0px 0px 16px 12px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -28,12 +73,11 @@
     top: 50%;
     width: auto;
     margin-top: -22px;
-    padding: 16px;
-    color: white;
+    padding: 30px;
+    color: blue;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 30px;
     transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
     user-select: none;
 }
 
@@ -50,15 +94,16 @@
 
 .prev:hover,
 .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(31, 245, 24, 0.39);
+    border-radius: 50px;
 }
 
 
 /* Caption text */
 
 .text {
-    color: #f2f2f2;
-    font-size: 15px;
+    color: #0634ff;
+    font-size: 50px;
     padding: 8px 12px;
     position: absolute;
     bottom: 8px;
@@ -85,7 +130,7 @@
     height: 15px;
     width: 15px;
     margin: 0 2px;
-    background-color: #bbb;
+    background-color: #26f530;
     border-radius: 50%;
     display: inline-block;
     transition: background-color 0.6s ease;
@@ -93,7 +138,7 @@
 
 .active,
 .dot:hover {
-    background-color: #717171;
+    background-color: #099104;
 }
 
 
