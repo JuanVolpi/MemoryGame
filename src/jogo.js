@@ -21,11 +21,10 @@ const gameCardDificullty = {
       'Mushroom',
       'Penguin',
       'Propeller_Mushroom',
-      'Star',
       'Dead1',
       'Dead1',
     ],
-    pares: 5,
+    pares: 4,
   },
   frenteCartasDificil: {
     cartas: [
@@ -38,7 +37,7 @@ const gameCardDificullty = {
       'Dead2',
       'Dead2',
     ],
-    pares: 6,
+    pares: 5,
   },
 };
 
@@ -146,12 +145,12 @@ const getImgNameFromImgPathString = (path) =>
  */
 function handleCardClick(carta) {
   /*
-      Se a carta já foi selecionada e utilizada para criar um par
-      válido de cartas iguais, logo essa carta existe no array de
-      cartas selecionadas, a função termina por aqui, assim evita-se
-      descelecionar cartas antes de escolher um par, e/ou cartas
-      já utilizadas/escolhidas.
-    */
+                  Se a carta já foi selecionada e utilizada para criar um par
+                  válido de cartas iguais, logo essa carta existe no array de
+                  cartas selecionadas, a função termina por aqui, assim evita-se
+                  descelecionar cartas antes de escolher um par, e/ou cartas
+                  já utilizadas/escolhidas.
+                */
   if (
     carta.getAttribute('selected') === 'true' ||
     checkCardInSelectedCardArray(carta.id)
@@ -159,16 +158,16 @@ function handleCardClick(carta) {
     return;
 
   /*
-      No momento que tivermos duas cartas disponiveis para comparar
-      vamos trancar a interação do jogador com cada carta (como um semaforo - var locked)
-      para evitar "race-conditions" (se é que pode acontecer) ao escolher várias
-      cartas simultaneamente.
-    */
+                  No momento que tivermos duas cartas disponiveis para comparar
+                  vamos trancar a interação do jogador com cada carta (como um semaforo - var locked)
+                  para evitar "race-conditions" (se é que pode acontecer) ao escolher várias
+                  cartas simultaneamente.
+                */
   if (gameState.numCardSelected < 2 && !GameInteractionIsLocked) {
     GameInteractionIsLocked = true;
 
     /* Só alteramos a dispozição da carta escolhida se essa mesma
-        não estiver contida no array de cartas selcionadas*/
+                                não estiver contida no array de cartas selcionadas*/
     if (!checkCardInSelectedCardArray(carta.id))
       toggleDisplayCardSelection(carta.id);
 
@@ -179,13 +178,13 @@ function handleCardClick(carta) {
     GameInteractionIsLocked = false;
   }
   /* Verificação do par de cartas escolhidas e a ação resultante,
-    se o jogo continua ou acaba */
+                se o jogo continua ou acaba */
   if (gameState.numCardSelected === 2) {
     GameInteractionIsLocked = true;
 
     /* Este comportamento lida com timmings de css,
-        logo para a boa visualização destas fantásticas animações css,
-        temos de dar tempo para elas ocurrerem */
+                                logo para a boa visualização destas fantásticas animações css,
+                                temos de dar tempo para elas ocurrerem */
     let gameBehaviorComputationTimeOutID = setTimeout(() => {
       let firstPickCardImageName = getImgNameFromImgPathString(
         getCartaImageSrc(0)
@@ -209,11 +208,12 @@ function handleCardClick(carta) {
             showGameOverScreen();
             clearTimeout(deathScreenAppearDelay);
           }, 1100);
+          return;
         }
 
         /* Se a esolha de carta gera um par de cartas iguais,
-                mudamos a dispozição das mesmas, e marcamos as cartas como
-                selecionadas, assim não se pode voltar a descelecionar as cartas */
+                                                                mudamos a dispozição das mesmas, e marcamos as cartas como
+                                                                selecionadas, assim não se pode voltar a descelecionar as cartas */
         gameState.correctChoices++;
         playSound('corr-choice');
 
@@ -236,7 +236,7 @@ function handleCardClick(carta) {
       }
 
       /* Verifica se as escolhas corretas necessárias para vencer
-            foram atingidas, e termina o jogo com sucesso se tudo estiver bem */
+                                                foram atingidas, e termina o jogo com sucesso se tudo estiver bem */
       if (gameState.correctChoices === gameState.neddedChoices) {
         GameInteractionIsLocked = true;
         let id = setTimeout(() => {
@@ -245,10 +245,11 @@ function handleCardClick(carta) {
           showGameWinScreen();
           clearTimeout(id);
         }, 1100);
+        return;
       }
 
       /* Esta secção lida com o reset da rodada de seleção do par de cartas
-            e desbloqueia o tabuleiro para a próxima jogada*/
+                                                e desbloqueia o tabuleiro para a próxima jogada*/
       gameState.cartasSelecionadas = [];
       gameState.numCardSelected = 0;
       GameInteractionIsLocked = false;
