@@ -1,4 +1,4 @@
-FROM arm64v8/nginx:stable-alpine
+FROM arm64v8/nginx:stable-alpine-slim
 WORKDIR /app
 
 COPY . /usr/share/nginx/html

@@ -1,16 +1,16 @@
-import { audioBackEndInit, playSound, stopSound } from "./soundLoader.js";
+import { audioBackEndInit, playSound, stopSound } from './soundLoader.js';
 
 const dificuldadesJogo = {
-  facil: "frenteCartasFacil",
-  medio: "frenteCartasMedio",
-  dificil: "frenteCartasDificil",
+  facil: 'frenteCartasFacil',
+  medio: 'frenteCartasMedio',
+  dificil: 'frenteCartasDificil',
 };
 
-let cartas = document.getElementsByClassName("card");
+let cartas = document.getElementsByClassName('card');
 
-let facil = document.getElementById("facil");
-let medio = document.getElementById("medio");
-let dificil = document.getElementById("dificil");
+let facil = document.getElementById('facil');
+let medio = document.getElementById('medio');
+let dificil = document.getElementById('dificil');
 let musica = 0;
 
 audioBackEndInit();
@@ -18,35 +18,35 @@ audioBackEndInit();
 // Muda a cor de fundo da página, ao entrar em cada carta
 // cada carta têm uma cor especifica que simboliza a
 facil.onmouseover = () => {
-  document.querySelector(".page").style.backgroundColor = "green";
+  document.querySelector('.page').style.backgroundColor = 'green';
 };
 facil.onclick = () => {
   //chamar jogo dificuldade facil
-  gameStartRedirect("overworldtheme", dificuldadesJogo.facil);
+  gameStartRedirect('overworldtheme', dificuldadesJogo.facil);
 };
 
 medio.onmouseover = () => {
-  document.querySelector(".page").style.backgroundColor = "yellow";
+  document.querySelector('.page').style.backgroundColor = 'yellow';
 };
 medio.onclick = () => {
   //chamar jogo dificuldade media
-  gameStartRedirect("overworldtheme", dificuldadesJogo.medio);
+  gameStartRedirect('overworldtheme', dificuldadesJogo.medio);
 };
 
 dificil.onmouseover = () => {
-  document.querySelector(".page").style.backgroundColor = "red";
+  document.querySelector('.page').style.backgroundColor = 'red';
 };
 dificil.onclick = () => {
   //chamar jogo dificuldade dificil
-  gameStartRedirect("bowser-castle", dificuldadesJogo.dificil);
+  gameStartRedirect('bowser-castle', dificuldadesJogo.dificil);
 };
 
 // Mudar a cor de fundo da página para cyan, após o cursor sair de cada carta
 Array.from(cartas).forEach(
   (carta) =>
     (carta.onmouseleave = () => {
-      document.querySelector(".page").style.backgroundColor = "cyan";
-    }),
+      document.querySelector('.page').style.backgroundColor = 'cyan';
+    })
 );
 
 /**
@@ -62,11 +62,11 @@ Array.from(cartas).forEach(
 function gameStartRedirect(gameMusicTheme, dificuldade) {
   playSound(gameMusicTheme, 0.3);
 
-  document.body.style.animationName = "fadeOut";
-  localStorage.setItem("dificuldade", dificuldade);
+  document.body.style.animationName = 'fadeOut';
+  localStorage.setItem('dificuldade', dificuldade);
 
   musica = setTimeout(() => {
-    window.location = "jogo.html";
+    window.location = 'jogo.html';
     stopSound(gameMusicTheme);
     clearTimeout(musica);
   }, 2200);
